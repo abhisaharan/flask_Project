@@ -1,0 +1,3 @@
+Request - response cycle:
+
+browser -> flask_demo.py -> templates/ -> static -> rendered pages sent back to flask_demo.py -> to browser
