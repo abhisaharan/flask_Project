@@ -2,10 +2,16 @@ Request - response cycle:
 
 browser -> flask_demo.py -> templates/ -> static -> rendered pages sent back to flask_demo.py -> to browser
 
-Session:
+Session: Its created in signup function in flask_demo.py
 - After user signs in, app needs to identify page request to serve the user
 - The app sets a cookie in the browser containing an ID
 - For each subsequent request, this ID is passed on the app
 - App checks if this ID matches with the user credentials
 - If it does, app responds with the relevant info
 - The process is called a session
+
+Sign-In Page
+- Creates a new class named login form in forms.py
+- Creates a new URL mapping for /login in flask_demo.py
+- create a web template in templates
+

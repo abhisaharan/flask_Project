@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+    <main class = "container signup-section">
+        <div class="section-content">
+            <h2>Log In</h2>
+
+            <form method="POST" action="/login">
+                {{ form.hidden_tag() }} <!--to protect against csrf attacks-->
+
+                <div class="form-group">
+                    {{ form.email.label }}
+
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <p class="error-message">{{error}}</p>  <!--creating an error message when wrong info entered . This is the error message in forms.py-->
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form.email }}
+                </div>
+
+
+                <div class="form-group">
+                    {{ form.password.label }}
+
+                    {% if form.password.errors %}
+                        {% for error in form.password.errors %}
+                            <p class="error-message">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+
+                    {{ form.password }}
+                </div>
+
+                {{ form.submit(class="btn-primary") }}
+
+            </form>
+        </div>
+    </main>
+{% endblock %}
