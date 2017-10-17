@@ -1,3 +1,11 @@
 Request - response cycle:
 
 browser -> flask_demo.py -> templates/ -> static -> rendered pages sent back to flask_demo.py -> to browser
+
+Session:
+- After user signs in, app needs to identify page request to serve the user
+- The app sets a cookie in the browser containing an ID
+- For each subsequent request, this ID is passed on the app
+- App checks if this ID matches with the user credentials
+- If it does, app responds with the relevant info
+- The process is called a session
