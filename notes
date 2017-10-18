@@ -10,8 +10,15 @@ Session: Its created in signup function in flask_demo.py
 - If it does, app responds with the relevant info
 - The process is called a session
 
+Ex: "session['email'] = newuser.email"
+We associated the key "email" with the user's email in order to create this session.
+To determine if a user is logged in that key "email" should exist in this object. If user is not logged in
+the key email wouldn't have been set and key "email" shouldn't exist in object
+
 Sign-In Page
 - Creates a new class named login form in forms.py
 - Creates a new URL mapping for /login in flask_demo.py
 - create a web template in templates
+
+
 

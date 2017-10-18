@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from models import db, User
-from forms import SignupForm, LoginForm
+from forms import SignupForm, LoginForm, AddressForm
 
 app = Flask(__name__)   #new instance of the class flask
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/learningflask'
@@ -20,6 +20,8 @@ def about():
 
 @app.route("/signup", methods=['GET', 'POST'] )
 def signup():
+    if "email" in session:
+        return redirect(url_for("home"))
     form = SignupForm()
     if request.method == 'POST':
         if form.validate() == False:
@@ -29,7 +31,7 @@ def signup():
             db.session.add(newuser)
             db.session.commit()
 
-            session['email'] = newuser.email
+            session['email'] = newuser.email    #check notes
             return redirect(url_for('home'))
 
     elif request.method == "GET":
@@ -38,6 +40,9 @@ def signup():
 
 @app.route("/login", methods=['GET', 'POST'] )
 def login():
+    if "email" in session:
+        return redirect(url_for("home"))
+
     form = LoginForm()
 
     if request.method == "POST":
@@ -61,12 +66,37 @@ def login():
 @app.route("/logout")
 def logout():
     session.pop('email', None)
-    return redirect(url_for("index.html"))
+    return redirect(url_for("index"))
 
 
-@app.route("/home")
+@app.route("/home", methods=['GET', 'POST'])
 def home():
-    return render_template("home.html")
+    if "email" not in session:      #AUTHENTICATION IS USED HERE. This process comes under authentication
+        return redirect(url_for("login"))   #No longer can access "home" if user is not logged in
+
+    form = AddressForm()
+
+    places = []
+    my_coordinates = [37, -122]
+
+    if request.method == "POST":
+        if form.validate() == False:
+            return render_template("home.html", form=form)
+        else:
+            # get the address
+            address = form.address.data
+
+            # query for places around it
+            p = Place()
+            my_coordinates = p.address_to_latlng(address)
+            places = p.query(address)
+
+            # return those results
+            return render_template("home.html", form=form, my_coordinates=my_coordinates, places=places)
+
+
+    elif request.method == "GET":
+        return render_template("home.html", form=form, my_coordinates=my_coordinates, places=places)
 
 
 if __name__ == '__main__':
